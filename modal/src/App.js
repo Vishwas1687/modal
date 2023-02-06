@@ -3,6 +3,7 @@ import {useState,useEffect} from 'react';
 import TodoList from './TodoList.js';
 import {nanoid} from 'nanoid';
 import Input from './Input.js';
+import Modal from './Modal.js';
 import {FaTimes} from 'react-icons/fa';
 
 // const LOCAL_STORAGE_KEY='todo.data';
@@ -45,6 +46,17 @@ function App() {
   //   localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(todos))
   // },[todos])
 
+   const [editTodo,setEditTodo]=useState(false)
+    const [formData,setFormData]=useState({
+        id:'',
+        name:'',
+        description:''
+    })
+
+   const [editId,setEditId]=useState(null)
+
+
+
   const handleAddTodo=(event)=>{
     event.preventDefault()
       const fieldname=event.target.getAttribute("name");
@@ -65,6 +77,42 @@ function App() {
     setTodos(newTodos)
   }
 
+  const deleteTodos=(id)=>{
+    const newTodos=todos.filter((todo)=>todo.id!==id)
+    setTodos(newTodos)
+  }
+  
+
+
+
+      const handleEdit=(id)=>{
+         setEditTodo(true)
+         setEditId(id)
+         setFormData({...formData,[formData.id]:id})
+    }
+
+    const handleEditTodo=(event)=>{
+          event.preventDefault()
+          const fieldname=event.target.name
+          const fieldvalue=event.target.value
+          const changedTodo={...formData}
+          formData[fieldname]=fieldvalue
+          setFormData(changedTodo)
+    }
+     
+    const handleModalSubmit=(event)=>{
+         event.preventDefault()
+         const index=todos.findIndex((todoIndex)=>todoIndex.id===editId)
+         const newTodos=[...todos]
+         newTodos[index]=formData
+         setTodos(newTodos)
+    }
+    
+    const handleModalClose=()=>{
+          setEditTodo(false)
+    }
+
+
 
   return (
      <div className="app-container">
@@ -77,17 +125,27 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            <TodoList todos={todos}/>
+            <TodoList handleEdit={handleEdit} todos={todos}  deleteTodos={deleteTodos}/>
           </tbody>
         </table>
         <form onSubmit={(event)=>handleFormSubmit(event)}>
         {
           inputs.map((inputForm,index)=>{
-             return <Input key={index} label={inputForm.name} inputForm={inputForm} value={todos[inputForm.name]} handleAddTodo={handleAddTodo}/>
+             return <Input key={index} label={inputForm.name} inputForm={inputForm} handleAddTodo={handleAddTodo}/>
           })
         }
         <button className='submit-btn' type="submit">Add</button>
         </form>
+
+         {editTodo && <Modal handleModalClose={handleModalClose}>
+            <form onSubmit={(event)=>handleModalSubmit(event)}>
+            {inputs.map((input,index)=>{
+                <Input key={index} inputForm={input} label={input.name} handleAddTodo={handleEditTodo}/>
+            })}
+            <button className="modal-btn" type="submit">Update</button>
+            </form>
+            </Modal>}
+
      </div>
   );
 }

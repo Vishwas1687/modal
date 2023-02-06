@@ -1,13 +1,17 @@
-import React from 'react';
+import React,{useState} from 'react';
+import Input from './Input.js';
+import Modal from './Modal.js';
+
 import './Todo.css';
-const Todo=({todo})=>{
+const Todo=({todo,deleteTodos,handleEdit})=>{
+
      return (
         <>
         <td>{todo.name}</td>
         <td>{todo.description}</td>
         <td>
-            <button className='delete-btn'>Delete</button>
-            <button className='edit-btn'>Edit</button>
+            <button className='delete-btn' onClick={()=>deleteTodos(todo.id)}>Delete</button>
+            <button className='edit-btn' onClick={()=>handleEdit(todo.id)}>Edit</button>
         </td>
         </>
      )

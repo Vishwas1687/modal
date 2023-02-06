@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Input=({inputForm,label,value,handleAddTodo})=>{
+const Input=({inputForm,label,handleAddTodo})=>{
      return (
         <label>
            {label}
-       <input name={inputForm.name} placeholder={inputForm.placeholder} type={inputForm.type} value={value} onChange={(event)=>handleAddTodo(event)}/>
+       <input name={inputForm.name} placeholder={inputForm.placeholder} type={inputForm.type} onChange={(event)=>handleAddTodo(event)}/>
        </label>
      )
 }
