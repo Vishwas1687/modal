@@ -85,10 +85,11 @@ function App() {
 
 
 
-      const handleEdit=(id)=>{
+      const handleEdit=(id,todo)=>{
          setEditTodo(true)
          setEditId(id)
-         setFormData({...formData,[formData.id]:id})
+         const existingTodo={...todo}
+         setFormData(existingTodo)
     }
 
     const handleEditTodo=(event)=>{
@@ -134,7 +135,7 @@ function App() {
         <form onSubmit={(event)=>handleFormSubmit(event)}>
         {
           inputs.map((inputForm,index)=>{
-             return <Input key={index} label={inputForm.name} inputForm={inputForm} handleAddTodo={handleAddTodo}/>
+             return <Input key={index} value={todos[inputForm.name]}  label={inputForm.name} inputForm={inputForm} handleAddTodo={handleAddTodo}/>
           })
         }
         <button className='submit-btn' type="submit">Add</button>
@@ -143,7 +144,7 @@ function App() {
          {editTodo && <Modal handleModalClose={handleModalClose}>
             <form onSubmit={(event)=>handleModalSubmit(event)}>
             {inputs.map((input,index)=>{
-                return <Input key={index} inputForm={input} label={input.name} handleAddTodo={handleEditTodo}/>
+                return <Input key={index} inputForm={input} value={todos[input.name]} label={input.name} handleAddTodo={handleEditTodo}/>
             })}
             <button className="modal-btn" type="submit">Update</button>
             </form>

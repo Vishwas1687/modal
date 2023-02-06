@@ -11,7 +11,7 @@ const Todo=({todo,deleteTodos,handleEdit})=>{
         <td>{todo.description}</td>
         <td>
             <button className='delete-btn' onClick={()=>deleteTodos(todo.id)}>Delete</button>
-            <button className='edit-btn' onClick={()=>handleEdit(todo.id)}>Edit</button>
+            <button className='edit-btn' onClick={()=>handleEdit(todo.id,todo)}>Edit</button>
         </td>
         </>
      )
