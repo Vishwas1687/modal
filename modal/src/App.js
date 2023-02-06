@@ -2,9 +2,10 @@ import './App.css';
 import {useState,useEffect} from 'react';
 import TodoList from './TodoList.js';
 import {nanoid} from 'nanoid';
+import Input from './Input.js';
 import {FaTimes} from 'react-icons/fa';
 
-const LOCAL_STORAGE_KEY='todo.data';
+// const LOCAL_STORAGE_KEY='todo.data';
 function App() {
   const [todos,setTodos]=useState([{
     id:nanoid(),
@@ -16,17 +17,53 @@ function App() {
   name:'work',
   description:'lunch at 12pm'
 }])
-
-  const inputs=
-  useEffect(()=>{
-    const data=JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-     if(data)
-     setTodos(data)
-  },[])
    
-  useEffect(()=>{
-    localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(todos))
-  },[todos])
+  const [addFormTodo,setAddFormTodo]=useState({
+    name:'',
+    description:''
+  })
+
+  const inputs=[
+    {name:"name",
+    required:"required",
+    type:"text",
+     placeholder:"Todo Name"
+    },
+    {
+      name:"description",
+    required:"required",
+    type:"text",
+     placeholder:"Todo Description"
+    }
+  ]
+  // useEffect(()=>{
+  //   const data=JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+  //    if(data) setTodos(data)
+  // },[])
+   
+  // useEffect(()=>{
+  //   localStorage.setItem(LOCAL_STORAGE_KEY,JSON.stringify(todos))
+  // },[todos])
+
+  const handleAddTodo=(event)=>{
+    event.preventDefault()
+      const fieldname=event.target.getAttribute("name");
+      const fieldvalue=event.target.value;
+      const newTodo={...addFormTodo}
+      newTodo[fieldname]=fieldvalue
+      setAddFormTodo(newTodo)
+  }
+
+  const handleFormSubmit=(event)=>{
+    event.preventDefault()
+    const newTodo={
+      id:nanoid(),
+      name:addFormTodo.name,
+      description:addFormTodo.description
+    }
+    const newTodos=[...todos,newTodo]
+    setTodos(newTodos)
+  }
 
 
   return (
@@ -43,6 +80,14 @@ function App() {
             <TodoList todos={todos}/>
           </tbody>
         </table>
+        <form onSubmit={(event)=>handleFormSubmit(event)}>
+        {
+          inputs.map((inputForm,index)=>{
+             return <Input key={index} label={inputForm.name} inputForm={inputForm} value={todos[inputForm.name]} handleAddTodo={handleAddTodo}/>
+          })
+        }
+        <button className='submit-btn' type="submit">Add</button>
+        </form>
      </div>
   );
 }

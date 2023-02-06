@@ -1,0 +1,19 @@
+.delete-btn{
+    font-size: 1.2rem;
+    margin-left:2rem;
+    margin-right: 3rem;
+}
+
+.edit-btn{
+    font-size: 1.2rem;
+}
+
+.delete-btn:hover{
+    color: black;
+    background-color: white;
+}
+
+.edit-btn:hover{
+    color:black;
+    background-color:white;
+}
