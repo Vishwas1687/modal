@@ -96,7 +96,7 @@ function App() {
           const fieldname=event.target.name
           const fieldvalue=event.target.value
           const changedTodo={...formData}
-          formData[fieldname]=fieldvalue
+          changedTodo[fieldname]=fieldvalue
           setFormData(changedTodo)
     }
      
@@ -106,10 +106,13 @@ function App() {
          const newTodos=[...todos]
          newTodos[index]=formData
          setTodos(newTodos)
+         setEditTodo(false)
+         setEditId(null)
     }
     
     const handleModalClose=()=>{
           setEditTodo(false)
+          setEditId(null)
     }
 
 
@@ -140,7 +143,7 @@ function App() {
          {editTodo && <Modal handleModalClose={handleModalClose}>
             <form onSubmit={(event)=>handleModalSubmit(event)}>
             {inputs.map((input,index)=>{
-                <Input key={index} inputForm={input} label={input.name} handleAddTodo={handleEditTodo}/>
+                return <Input key={index} inputForm={input} label={input.name} handleAddTodo={handleEditTodo}/>
             })}
             <button className="modal-btn" type="submit">Update</button>
             </form>
